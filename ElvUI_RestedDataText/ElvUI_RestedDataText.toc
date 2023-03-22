@@ -1,0 +1,9 @@
+## Interface: 90001
+## Title: |cff1784d1ElvUI |rRestedDataText
+## Author: ZackHill
+## Version: 1.0.0
+## RequiredDeps: ElvUI
+## DefaultState: Enabled
+## LoadOnDemand: 0
+
+ElvUI_RestedDataText.xml
