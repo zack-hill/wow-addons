@@ -1,4 +1,4 @@
-## Interface: 90001
+## Interface: 100007
 ## Title: |cff1784d1ElvUI |rRestedDataText
 ## Author: ZackHill
 ## Version: 1.0.0
