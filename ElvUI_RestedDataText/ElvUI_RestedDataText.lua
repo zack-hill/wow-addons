@@ -50,6 +50,18 @@ local function formatPercent(num)
 	return format('%0d%%', num)
 end
 
+local function CalculateAndFormatPercent(currentValue, maxValue)
+	return round((currentValue / maxValue) * 100, 1)
+end
+
+local function FormatLevelText(level, xpPercent, restedPercent)
+	local text = 'Level ' .. level
+	if level ~= 70 then
+		text = text .. ' |cff00FF00' .. formatPercent(xpPercent) .. '|r || |cff00BFFF' .. formatPercent(restedPercent) .. '|r'
+	end
+	return text
+end
+
 local function updateRested(self)
 	wipe(myRested)
 	wipe(menuList)
@@ -90,10 +102,9 @@ local function updateRested(self)
 				local restedPercentProjected = min(restedCap, restedPercentStart + restedPercentAccrued)
 				local restedPercentProjected = round(restedPercentProjected, 1)
 
-				local levelText = format('Level %0d', restedData.level)
-				local restedValueText = restedData.level == 70 and '' or format(' - %0d%% Rested', restedPercentProjected)
 				local restingStatusText = (restedData.resting or restedPercentProjected == restedCap) and '' or '|cFFFF0000[Not Resting]|r '
-				local text = restingStatusText .. levelText ..  restedValueText
+				local xpPercent = CalculateAndFormatPercent(restedData.xp, restedData.xpMax)
+				local text = restingStatusText .. FormatLevelText(restedData.level, xpPercent, restedPercentProjected)
 
 				tinsert(myRested, {
 						name = name,
@@ -133,32 +144,25 @@ local function OnEvent(self, event)
 		ElvDB.rested[E.myrealm] = {}
 	end
 
-	local level = UnitLevel('player')
-	local xp = UnitXP('player')
-	local xpMax = UnitXPMax('player')
-	local rested = GetXPExhaustion() or 0
-	
-	ElvDB.rested[E.myrealm][E.myname] = {
+	local characterData = {
 		faction = UnitFactionGroup('player'),
 		race = UnitRace('player'),
 		class = UnitClass('player'),
-		level = level,
-		xp = xp,
-		xpMax = xpMax,
-		rested = rested,
+		level = UnitLevel('player'),
+		xp = UnitXP('player'),
+		xpMax = UnitXPMax('player'),
+		rested = GetXPExhaustion() or 0,
 		resting = IsResting(),
 		updated = time(),
 	}
+	ElvDB.rested[E.myrealm][E.myname] = characterData
 
 	updateRested(self)
 
-	local xpPercent = (xp / xpMax) * 100
-	local restedPercent = (rested / xpMax) * 100
-	local text = 'Level ' .. level
-	if level ~= 70 then
-		text = text .. ' |cff00FF00' .. formatPercent(xpPercent) .. '|r || |cff00BFFF' .. formatPercent(restedPercent) .. '|r'
-	end
-	self.text:SetText(text)
+	local xpPercent = CalculateAndFormatPercent(characterData.xp, characterData.xpMax)
+	local restedPercent = CalculateAndFormatPercent(characterData.rested, characterData.xpMax)
+	local levelText = FormatLevelText(characterData.level, xpPercent, restedPercent)
+	self.text:SetText(levelText)
 end
 
 local function Click(self, btn)
