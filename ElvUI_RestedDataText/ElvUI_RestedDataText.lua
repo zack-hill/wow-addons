@@ -70,7 +70,7 @@ local function updateRested(self)
 	tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
 
 	local realmN = 1
-	for realm in pairs(ElvDB.serverID[E.serverID]) do
+	for realm in pairs(ElvDB.rested) do
 		tinsert(menuList, realmN, { 
 			text = 'Delete All - '..realm, 
 			notCheckable = true, 
