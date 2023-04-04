@@ -102,7 +102,7 @@ local function updateRested(self)
 				local restedPercentProjected = min(restedCap, restedPercentStart + restedPercentAccrued)
 				local restedPercentProjected = round(restedPercentProjected, 1)
 
-				local restingStatusText = (restedData.resting or restedPercentProjected == restedCap) and '' or '|cFFFF0000[Not Resting]|r '
+				local restingStatusText = (restedData.resting or restedPercentProjected == restedCap or restedData.level == 70) and '' or '|cFFFF0000[Not Resting]|r '
 				local xpPercent = CalculateAndFormatPercent(restedData.xp, restedData.xpMax)
 				local text = restingStatusText .. FormatLevelText(restedData.level, xpPercent, restedPercentProjected)
 
