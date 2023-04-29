@@ -18,10 +18,8 @@ local iconString = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
 local db
 
 local function sortFunction(a, b)
-	if a.level == b.level then
-		if a.level == 70 then
-			return a.name < b.name
-		end
+	if a.level == b.level and a.level == 70 then
+		return a.name < b.name
 	else
 		if a.level == 70 or b.level == 70 then
 			return a.level < b.level
