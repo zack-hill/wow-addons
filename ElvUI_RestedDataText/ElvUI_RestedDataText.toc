@@ -1,7 +1,7 @@
-## Interface: 100007
+## Interface: 100100
 ## Title: |cff1784d1ElvUI |rRestedDataText
 ## Author: ZackHill
-## Version: 1.0.3
+## Version: 1.0.4
 ## RequiredDeps: ElvUI
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
